@@ -7,19 +7,31 @@ import { Character } from "../utils/characters";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 const Model = ({
-  position,
   character,
+  position,
+  spinX,
+  spinY,
+  spinZ,
 }: {
-  position: [number, number, number];
   character: Character;
+  position: [number, number, number];
+  spinX: boolean;
+  spinY: boolean;
+  spinZ: boolean;
 }) => {
   const obj = useLoader(GLTFLoader, getGlb(character));
 
   const meshRef = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   useFrame((_, delta) => {
-    if (meshRef.current) {
+    if (spinX && meshRef.current) {
+      meshRef.current.rotation.x += delta * 0.5;
+    }
+    if (spinY && meshRef.current) {
       meshRef.current.rotation.y += delta * 0.5;
+    }
+    if (spinZ && meshRef.current) {
+      meshRef.current.rotation.z += delta * 0.5;
     }
   });
 
